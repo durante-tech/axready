@@ -1,0 +1,341 @@
+{
+  "slug": "netlify",
+  "name": "Netlify",
+  "url": "https://netlify.com",
+  "repo": "https://github.com/netlify/netlify-mcp",
+  "scannedAt": "2026-04-19",
+  "overallScore": 73,
+  "grade": "C",
+  "pillars": {
+    "access": {
+      "score": 82,
+      "grade": "B",
+      "signals": [
+        {
+          "name": "robots.txt allows AI crawlers",
+          "status": "pass",
+          "score": 2,
+          "weight": "high",
+          "detail": "GPTBot, ClaudeBot, PerplexityBot, Google-Extended all permitted"
+        },
+        {
+          "name": "llms.txt exists and validates",
+          "status": "pass",
+          "score": 2,
+          "weight": "high",
+          "detail": "Valid markdown with structured links to documentation"
+        },
+        {
+          "name": "llms-full.txt exists",
+          "status": "fail",
+          "score": 0,
+          "weight": "medium",
+          "detail": "No extended documentation file found at /llms-full.txt"
+        },
+        {
+          "name": "SSR/pre-rendered content",
+          "status": "partial",
+          "score": 1,
+          "weight": "medium",
+          "detail": "Marketing pages SSR, some dashboard components client-only"
+        },
+        {
+          "name": "No agent-blocking CAPTCHAs",
+          "status": "pass",
+          "score": 2,
+          "weight": "medium",
+          "detail": "No aggressive WAF or CAPTCHA challenges on bot user agents"
+        },
+        {
+          "name": "/.well-known/mcp-server discovery",
+          "status": "pass",
+          "score": 2,
+          "weight": "high",
+          "detail": "MCP server discovery endpoint configured and responding"
+        },
+        {
+          "name": "/.well-known/agent-card.json",
+          "status": "fail",
+          "score": 0,
+          "weight": "medium",
+          "detail": "A2A protocol agent discovery not implemented"
+        },
+        {
+          "name": "sitemap.xml exists",
+          "status": "pass",
+          "score": 2,
+          "weight": "low",
+          "detail": "Valid XML sitemap with 1,200+ URLs"
+        },
+        {
+          "name": "Content negotiation (markdown)",
+          "status": "fail",
+          "score": 0,
+          "weight": "low",
+          "detail": "No Accept: text/markdown content negotiation support"
+        }
+      ]
+    },
+    "context": {
+      "score": 68,
+      "grade": "C",
+      "signals": [
+        {
+          "name": "JSON-LD / Schema.org structured data",
+          "status": "pass",
+          "score": 2,
+          "weight": "high",
+          "detail": "Organization and WebSite schema present on marketing pages"
+        },
+        {
+          "name": "Semantic HTML structure",
+          "status": "pass",
+          "score": 2,
+          "weight": "medium",
+          "detail": "Proper heading hierarchy, landmarks, and ARIA labels"
+        },
+        {
+          "name": "OpenAPI/Swagger spec accessible",
+          "status": "pass",
+          "score": 2,
+          "weight": "high",
+          "detail": "OpenAPI 3.0 spec available at /docs/api"
+        },
+        {
+          "name": "Machine-readable pricing",
+          "status": "partial",
+          "score": 1,
+          "weight": "medium",
+          "detail": "Pricing page exists but no structured /pricing.md or JSON endpoint"
+        },
+        {
+          "name": "AGENTS.md in repo",
+          "status": "pass",
+          "score": 2,
+          "weight": "high",
+          "detail": "Comprehensive AGENTS.md with tool descriptions and usage patterns"
+        },
+        {
+          "name": "CLAUDE.md / .claude/ in repo",
+          "status": "fail",
+          "score": 0,
+          "weight": "high",
+          "detail": "No CLAUDE.md or .claude/ directory found in repository"
+        },
+        {
+          "name": ".cursorrules / .cursor/rules/",
+          "status": "fail",
+          "score": 0,
+          "weight": "medium",
+          "detail": "No Cursor AI configuration present"
+        },
+        {
+          "name": "llms.txt in repo root",
+          "status": "fail",
+          "score": 0,
+          "weight": "medium",
+          "detail": "No llms.txt in repository root (distinct from website)"
+        },
+        {
+          "name": "README quality",
+          "status": "pass",
+          "score": 2,
+          "weight": "medium",
+          "detail": "Comprehensive README with code examples, CLI commands, and setup instructions"
+        },
+        {
+          "name": "Documentation directory",
+          "status": "pass",
+          "score": 2,
+          "weight": "medium",
+          "detail": "docs/ directory with substantive API and integration guides"
+        },
+        {
+          "name": "Architecture Decision Records",
+          "status": "fail",
+          "score": 0,
+          "weight": "low",
+          "detail": "No docs/adr/ or docs/decisions/ directory found"
+        }
+      ]
+    },
+    "tools": {
+      "score": 78,
+      "grade": "B",
+      "signals": [
+        {
+          "name": "MCP server exists",
+          "status": "pass",
+          "score": 2,
+          "weight": "high",
+          "detail": "Official @netlify/mcp package published and maintained"
+        },
+        {
+          "name": "MCP tools count",
+          "status": "pass",
+          "score": 2,
+          "weight": "high",
+          "detail": "43 tools exposed covering deploy, site, DNS, env, and build management"
+        },
+        {
+          "name": "OAuth/API key auth for agents",
+          "status": "pass",
+          "score": 2,
+          "weight": "medium",
+          "detail": "Personal access tokens and OAuth app integration documented"
+        },
+        {
+          "name": "CLI with JSON output mode",
+          "status": "pass",
+          "score": 2,
+          "weight": "medium",
+          "detail": "netlify-cli supports --json flag for machine-readable output"
+        },
+        {
+          "name": "SDK availability",
+          "status": "partial",
+          "score": 1,
+          "weight": "medium",
+          "detail": "JavaScript SDK available; no official Python, Go, or Ruby SDKs"
+        },
+        {
+          "name": "Webhook/callback support",
+          "status": "pass",
+          "score": 2,
+          "weight": "low",
+          "detail": "Deploy notifications, form submissions, and build event webhooks"
+        },
+        {
+          "name": "Arazzo workflow definitions",
+          "status": "fail",
+          "score": 0,
+          "weight": "low",
+          "detail": "No arazzo.yaml or OpenAPI workflow specifications found"
+        }
+      ]
+    },
+    "orchestration": {
+      "score": 65,
+      "grade": "C",
+      "signals": [
+        {
+          "name": "Machine-readable error responses",
+          "status": "pass",
+          "score": 2,
+          "weight": "high",
+          "detail": "Structured JSON errors with error codes and messages"
+        },
+        {
+          "name": "Rate limit headers",
+          "status": "pass",
+          "score": 2,
+          "weight": "medium",
+          "detail": "X-RateLimit-Limit, X-RateLimit-Remaining, Retry-After headers present"
+        },
+        {
+          "name": "Idempotency support",
+          "status": "fail",
+          "score": 0,
+          "weight": "medium",
+          "detail": "No Idempotency-Key header support documented"
+        },
+        {
+          "name": "Standard pagination",
+          "status": "pass",
+          "score": 2,
+          "weight": "medium",
+          "detail": "Cursor-based pagination on list endpoints"
+        },
+        {
+          "name": "Test infrastructure in repo",
+          "status": "pass",
+          "score": 2,
+          "weight": "high",
+          "detail": "Comprehensive test suite with unit and integration tests"
+        },
+        {
+          "name": "CI/CD configuration",
+          "status": "pass",
+          "score": 2,
+          "weight": "medium",
+          "detail": ".github/workflows/ with CI pipeline for tests and linting"
+        },
+        {
+          "name": "package.json scripts",
+          "status": "pass",
+          "score": 2,
+          "weight": "medium",
+          "detail": "test, build, lint, format scripts all present"
+        },
+        {
+          "name": ".env.example present",
+          "status": "fail",
+          "score": 0,
+          "weight": "low",
+          "detail": "No .env.example for reproducible environment setup"
+        },
+        {
+          "name": "Lock file present",
+          "status": "pass",
+          "score": 2,
+          "weight": "low",
+          "detail": "package-lock.json committed for deterministic installs"
+        },
+        {
+          "name": "Type definitions",
+          "status": "partial",
+          "score": 1,
+          "weight": "low",
+          "detail": "TypeScript types for core API; some utilities lack .d.ts"
+        }
+      ]
+    }
+  },
+  "recommendations": [
+    {
+      "pillar": "context",
+      "priority": "high",
+      "text": "Add CLAUDE.md to improve agent context for Claude Code and similar AI coding tools"
+    },
+    {
+      "pillar": "context",
+      "priority": "high",
+      "text": "Add .cursorrules for Cursor IDE agent integration"
+    },
+    {
+      "pillar": "access",
+      "priority": "medium",
+      "text": "Create llms-full.txt with complete documentation for comprehensive LLM context"
+    },
+    {
+      "pillar": "context",
+      "priority": "medium",
+      "text": "Add llms.txt to repository root for code-aware agents"
+    },
+    {
+      "pillar": "access",
+      "priority": "medium",
+      "text": "Implement /.well-known/agent-card.json for A2A protocol discovery"
+    },
+    {
+      "pillar": "orchestration",
+      "priority": "medium",
+      "text": "Add Idempotency-Key header support for safe retry patterns"
+    },
+    {
+      "pillar": "orchestration",
+      "priority": "low",
+      "text": "Add .env.example for reproducible agent environment setup"
+    },
+    {
+      "pillar": "context",
+      "priority": "low",
+      "text": "Create Architecture Decision Records in docs/adr/ for agent-readable design context"
+    },
+    {
+      "pillar": "tools",
+      "priority": "low",
+      "text": "Publish SDKs for Python, Go, and Ruby to broaden agent platform support"
+    }
+  ]
+}

@@ -7,8 +7,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { PaginatedData } from "@/types/pagination";
 import { CommentWithMetadata } from "../../types";
 import { CommentCreateForm } from "../comment-create-form";
-import { CommentDeleteButton } from "../comment-delete-button";
-import { CommentItem } from "../comment-item";
+import { CommentList } from "../comment-list";
 import { usePaginatedComments } from "./use-paginated-comments";
 
 type CommentsProps = {

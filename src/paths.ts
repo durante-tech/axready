@@ -37,3 +37,13 @@ export const ticketEditPath = (ticketId: string) => `/tickets/${ticketId}/edit`;
 
 export const attachmentDownloadPath = (attachmentId: string) =>
   `/api/aws/s3/attachments/${attachmentId}`;
+
+export const axHomePath = () => "/ax";
+export const axReportPath = (slug: string) => `/ax/report/${slug}`;
+export const axReportsPath = () => "/ax/reports";
+export const axAboutPath = () => "/ax/about";
+export const axScanPath = (url: string, repo?: string) => {
+  const params = new URLSearchParams({ url });
+  if (repo) params.set("repo", repo);
+  return `/ax/scan?${params.toString()}`;
+};

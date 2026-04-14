@@ -1,0 +1,326 @@
+{
+  "slug": "axscore",
+  "name": "AX Score",
+  "url": "https://axscore.dev",
+  "repo": "https://github.com/durante-tech/axready",
+  "scannedAt": "2026-04-19",
+  "overallScore": 52,
+  "grade": "D",
+  "pillars": {
+    "access": {
+      "score": 45,
+      "grade": "D",
+      "signals": [
+        {
+          "name": "robots.txt allows AI crawlers",
+          "status": "pass",
+          "score": 2,
+          "weight": "high",
+          "detail": "Default Netlify config permits all crawlers"
+        },
+        {
+          "name": "llms.txt exists and validates",
+          "status": "fail",
+          "score": 0,
+          "weight": "high",
+          "detail": "No llms.txt file served"
+        },
+        {
+          "name": "llms-full.txt exists",
+          "status": "fail",
+          "score": 0,
+          "weight": "medium",
+          "detail": "No llms-full.txt found"
+        },
+        {
+          "name": "SSR/pre-rendered content",
+          "status": "pass",
+          "score": 2,
+          "weight": "medium",
+          "detail": "All AX pages are server-rendered Next.js pages"
+        },
+        {
+          "name": "No agent-blocking CAPTCHAs",
+          "status": "pass",
+          "score": 2,
+          "weight": "medium",
+          "detail": "No CAPTCHA or WAF challenges"
+        },
+        {
+          "name": "/.well-known/mcp-server discovery",
+          "status": "fail",
+          "score": 0,
+          "weight": "high",
+          "detail": "No MCP server discovery endpoint"
+        },
+        {
+          "name": "/.well-known/agent-card.json",
+          "status": "fail",
+          "score": 0,
+          "weight": "medium",
+          "detail": "No A2A agent card"
+        },
+        {
+          "name": "sitemap.xml exists",
+          "status": "fail",
+          "score": 0,
+          "weight": "low",
+          "detail": "No sitemap generated"
+        },
+        {
+          "name": "Content negotiation (markdown)",
+          "status": "fail",
+          "score": 0,
+          "weight": "low",
+          "detail": "No markdown content negotiation"
+        }
+      ]
+    },
+    "context": {
+      "score": 58,
+      "grade": "D",
+      "signals": [
+        {
+          "name": "JSON-LD / Schema.org structured data",
+          "status": "fail",
+          "score": 0,
+          "weight": "high",
+          "detail": "No structured data in HTML"
+        },
+        {
+          "name": "Semantic HTML structure",
+          "status": "pass",
+          "score": 2,
+          "weight": "medium",
+          "detail": "Clean heading hierarchy and semantic landmarks"
+        },
+        {
+          "name": "OpenAPI/Swagger spec accessible",
+          "status": "fail",
+          "score": 0,
+          "weight": "high",
+          "detail": "No API spec — static report viewer only"
+        },
+        {
+          "name": "Machine-readable pricing",
+          "status": "fail",
+          "score": 0,
+          "weight": "medium",
+          "detail": "No pricing endpoint (free tool)"
+        },
+        {
+          "name": "AGENTS.md in repo",
+          "status": "fail",
+          "score": 0,
+          "weight": "high",
+          "detail": "No AGENTS.md in repository"
+        },
+        {
+          "name": "CLAUDE.md / .claude/ in repo",
+          "status": "pass",
+          "score": 2,
+          "weight": "high",
+          "detail": "CLAUDE.md with Sentinel-generated conventions"
+        },
+        {
+          "name": ".cursorrules / .cursor/rules/",
+          "status": "fail",
+          "score": 0,
+          "weight": "medium",
+          "detail": "No Cursor configuration"
+        },
+        {
+          "name": "llms.txt in repo root",
+          "status": "fail",
+          "score": 0,
+          "weight": "medium",
+          "detail": "No llms.txt in repo"
+        },
+        {
+          "name": "README quality",
+          "status": "partial",
+          "score": 1,
+          "weight": "medium",
+          "detail": "Basic README, lacks setup instructions and code examples"
+        },
+        {
+          "name": "Documentation directory",
+          "status": "fail",
+          "score": 0,
+          "weight": "medium",
+          "detail": "No docs/ directory"
+        },
+        {
+          "name": "Architecture Decision Records",
+          "status": "fail",
+          "score": 0,
+          "weight": "low",
+          "detail": "No ADR directory"
+        }
+      ]
+    },
+    "tools": {
+      "score": 38,
+      "grade": "F",
+      "signals": [
+        {
+          "name": "MCP server exists",
+          "status": "fail",
+          "score": 0,
+          "weight": "high",
+          "detail": "No MCP server — report viewer only"
+        },
+        {
+          "name": "MCP tools count",
+          "status": "fail",
+          "score": 0,
+          "weight": "high",
+          "detail": "Zero tools exposed"
+        },
+        {
+          "name": "OAuth/API key auth for agents",
+          "status": "fail",
+          "score": 0,
+          "weight": "medium",
+          "detail": "No API authentication"
+        },
+        {
+          "name": "CLI with JSON output mode",
+          "status": "fail",
+          "score": 0,
+          "weight": "medium",
+          "detail": "No CLI tool"
+        },
+        {
+          "name": "SDK availability",
+          "status": "fail",
+          "score": 0,
+          "weight": "medium",
+          "detail": "No SDK published"
+        },
+        {
+          "name": "Webhook/callback support",
+          "status": "fail",
+          "score": 0,
+          "weight": "low",
+          "detail": "No webhook system"
+        },
+        {
+          "name": "Arazzo workflow definitions",
+          "status": "fail",
+          "score": 0,
+          "weight": "low",
+          "detail": "No workflow specs"
+        }
+      ]
+    },
+    "orchestration": {
+      "score": 62,
+      "grade": "C",
+      "signals": [
+        {
+          "name": "Machine-readable error responses",
+          "status": "fail",
+          "score": 0,
+          "weight": "high",
+          "detail": "No API — static pages only"
+        },
+        {
+          "name": "Rate limit headers",
+          "status": "fail",
+          "score": 0,
+          "weight": "medium",
+          "detail": "No API rate limiting"
+        },
+        {
+          "name": "Idempotency support",
+          "status": "fail",
+          "score": 0,
+          "weight": "medium",
+          "detail": "No API"
+        },
+        {
+          "name": "Standard pagination",
+          "status": "fail",
+          "score": 0,
+          "weight": "medium",
+          "detail": "No paginated endpoints"
+        },
+        {
+          "name": "Test infrastructure in repo",
+          "status": "fail",
+          "score": 0,
+          "weight": "high",
+          "detail": "No test runner configured"
+        },
+        {
+          "name": "CI/CD configuration",
+          "status": "partial",
+          "score": 1,
+          "weight": "medium",
+          "detail": "Netlify auto-deploys on push, no CI pipeline for tests"
+        },
+        {
+          "name": "package.json scripts",
+          "status": "pass",
+          "score": 2,
+          "weight": "medium",
+          "detail": "dev, build, lint scripts present"
+        },
+        {
+          "name": ".env.example present",
+          "status": "fail",
+          "score": 0,
+          "weight": "low",
+          "detail": "No .env.example file"
+        },
+        {
+          "name": "Lock file present",
+          "status": "pass",
+          "score": 2,
+          "weight": "low",
+          "detail": "package-lock.json committed"
+        },
+        {
+          "name": "Type definitions",
+          "status": "pass",
+          "score": 2,
+          "weight": "low",
+          "detail": "Full TypeScript with strict types"
+        }
+      ]
+    }
+  },
+  "recommendations": [
+    {
+      "pillar": "context",
+      "priority": "high",
+      "text": "Add AGENTS.md describing AX Score's purpose, capabilities, and integration patterns"
+    },
+    {
+      "pillar": "access",
+      "priority": "high",
+      "text": "Create llms.txt explaining the AX framework and scoring methodology"
+    },
+    {
+      "pillar": "tools",
+      "priority": "high",
+      "text": "Build an MCP server exposing scan and report retrieval tools"
+    },
+    {
+      "pillar": "context",
+      "priority": "medium",
+      "text": "Add JSON-LD structured data for reports (Dataset/Rating schema)"
+    },
+    {
+      "pillar": "orchestration",
+      "priority": "medium",
+      "text": "Add test infrastructure with Vitest or Playwright"
+    },
+    {
+      "pillar": "access",
+      "priority": "medium",
+      "text": "Generate sitemap.xml for report pages"
+    }
+  ]
+}

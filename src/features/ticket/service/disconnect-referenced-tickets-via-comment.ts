@@ -1,6 +1,6 @@
 import { Comment } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
-import { findTicketIdsFromText } from "@/utils/find-ids-from-text";
+import { findIdsFromText } from "@/utils/find-ids-from-text";
 import * as ticketData from "../data";
 
 export const disconnectReferencedTicketsViaComment = async (
@@ -19,7 +19,7 @@ export const disconnectReferencedTicketsViaComment = async (
     throw new Error("Comment not found !!!");
   }
 
-  const ticketIds = findTicketIdsFromText("tickets", comment.content);
+  const ticketIds = findIdsFromText("tickets", comment.content);
 
   if (!ticketIds.length) return;
 
@@ -32,7 +32,7 @@ export const disconnectReferencedTicketsViaComment = async (
     },
   });
 
-  const allOtherTicketIds = findTicketIdsFromText(
+  const allOtherTicketIds = findIdsFromText(
     "tickets",
     comments.map((comment) => comment.content).join(" ")
   );

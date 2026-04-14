@@ -4,7 +4,6 @@ import { isOwner } from "@/features/auth/utils/is-owner";
 import { getActiveOrganization } from "@/features/organization/queries/get-active-organization";
 import { getOrganizationsByUser } from "@/features/organization/queries/get-organizations-by-user";
 import { prisma } from "@/lib/prisma";
-import { getTicketPermissions } from "../permissions/get-ticket-permissions";
 import { ParsedSearchParams } from "../search-params";
 
 export const getTickets = async (
