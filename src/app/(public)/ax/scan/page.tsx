@@ -126,7 +126,9 @@ function ScanResultInner() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const runScan = useCallback(async () => {
+  const cacheKey = url ? `ax-scan:${url}:${repo || ""}` : null;
+
+  const fetchScan = useCallback(async () => {
     if (!url) {
       setError("No URL provided");
       setLoading(false);
@@ -146,16 +148,31 @@ function ScanResultInner() {
       }
       const data: Report = await res.json();
       setReport(data);
+      if (cacheKey) {
+        try { localStorage.setItem(cacheKey, JSON.stringify(data)); } catch { /* quota */ }
+      }
     } catch {
       setError("Network error — could not reach scan API");
     } finally {
       setLoading(false);
     }
-  }, [url, repo]);
+  }, [url, repo, cacheKey]);
 
   useEffect(() => {
-    runScan();
-  }, [runScan]);
+    if (!url) { setError("No URL provided"); setLoading(false); return; }
+    // Check localStorage cache first
+    if (cacheKey) {
+      try {
+        const cached = localStorage.getItem(cacheKey);
+        if (cached) {
+          setReport(JSON.parse(cached) as Report);
+          setLoading(false);
+          return;
+        }
+      } catch { /* ignore */ }
+    }
+    fetchScan();
+  }, [url, cacheKey, fetchScan]);
 
   if (loading) {
     return (
@@ -269,12 +286,41 @@ function ScanResultInner() {
       )}
 
       {/* Actions */}
-      <div className="flex justify-center gap-3">
+      <div className="flex flex-wrap justify-center gap-3">
+        <button
+          onClick={() => {
+            const blob = new Blob([JSON.stringify(report, null, 2)], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = `${report.slug}-ax-report.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+          }}
+          className="inline-flex items-center gap-2 rounded-xl border border-white/[0.06] bg-[#201f1f] px-5 py-2.5 text-sm font-medium text-[#e5e2e1] transition-colors hover:bg-[#2a2a2a]"
+        >
+          <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+          </svg>
+          Download JSON
+        </button>
         <button
           onClick={() => navigator.clipboard.writeText(window.location.href)}
           className="inline-flex items-center justify-center rounded-xl border border-white/[0.06] bg-[#201f1f] px-5 py-2.5 text-sm font-medium text-[#e5e2e1] transition-colors hover:bg-[#2a2a2a]"
         >
           Copy Share Link
+        </button>
+        <button
+          onClick={() => {
+            if (cacheKey) localStorage.removeItem(cacheKey);
+            setReport(null);
+            setError(null);
+            setLoading(true);
+            fetchScan();
+          }}
+          className="inline-flex items-center justify-center rounded-xl border border-white/[0.06] bg-[#201f1f] px-5 py-2.5 text-sm font-medium text-[#e5e2e1] transition-colors hover:bg-[#2a2a2a]"
+        >
+          Re-scan
         </button>
         <Link
           href={axHomePath()}
