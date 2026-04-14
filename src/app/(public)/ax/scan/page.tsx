@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useCallback, useEffect, useState } from "react";
+import { DeepScanButton } from "@/features/report/components/deep-scan-button";
 import type { Grade, PillarKey, Report, Signal } from "@/features/report/types";
 import { PILLAR_DESCRIPTIONS, PILLAR_LABELS, PILLAR_ORDER } from "@/features/report/types";
 import { axHomePath } from "@/paths";
@@ -206,7 +207,10 @@ function ScanResultInner() {
             </span>
           </div>
         </div>
-        <DarkScoreGauge score={report.overallScore} grade={report.grade} />
+        <div className="flex flex-col items-end gap-3">
+          <DarkScoreGauge score={report.overallScore} grade={report.grade} />
+          <DeepScanButton report={report} />
+        </div>
       </div>
 
       {/* Pillar Cards */}

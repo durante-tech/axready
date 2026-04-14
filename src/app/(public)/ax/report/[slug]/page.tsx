@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { DeepScanButton } from "@/features/report/components/deep-scan-button";
 import { getAllReports, getReport } from "@/features/report/queries/get-report";
 import type { Grade, PillarKey, Signal } from "@/features/report/types";
 import { PILLAR_DESCRIPTIONS, PILLAR_LABELS, PILLAR_ORDER } from "@/features/report/types";
@@ -104,7 +105,10 @@ export default async function ReportPage({ params }: { params: Promise<{ slug: s
             <span>Scanned: {new Date(report.scannedAt).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</span>
           </div>
         </div>
-        <Gauge score={report.overallScore} grade={report.grade} />
+        <div className="flex flex-col items-end gap-3">
+          <Gauge score={report.overallScore} grade={report.grade} />
+          <DeepScanButton report={report} />
+        </div>
       </div>
 
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
