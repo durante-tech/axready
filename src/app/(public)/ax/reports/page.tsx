@@ -1,7 +1,9 @@
-import type { Metadata } from "next";
+"use client";
+
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { getAllReports } from "@/features/report/queries/get-report";
-import type { Grade } from "@/features/report/types";
+import type { Grade, Report } from "@/features/report/types";
 import { PILLAR_LABELS, PILLAR_ORDER } from "@/features/report/types";
 import { axReportPath } from "@/paths";
 
@@ -15,13 +17,74 @@ const gradeRings: Record<Grade, string> = {
   A: "#34d399", B: "#60a5fa", C: "#fbbf24", D: "#fb923c", F: "#f87171",
 };
 
-export const metadata: Metadata = {
-  title: "Reports",
-  description: "AX Score reports for websites and repositories.",
-};
+function ReportCard({ report, href }: { report: Report; href: string }) {
+  const r = 50, circ = 2 * Math.PI * r, off = circ * (1 - report.overallScore / 100);
+  return (
+    <Link href={href}>
+      <div className="rounded-xl border border-white/[0.06] bg-[#201f1f] p-6 transition-colors hover:border-white/[0.12]">
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-lg font-bold" style={{ fontFamily: "Manrope, sans-serif" }}>{report.name}</h2>
+            <p className="text-xs text-[#8b90a0]">{report.url}</p>
+          </div>
+          <div className="relative flex h-20 w-20 items-center justify-center">
+            <svg width={80} height={80} viewBox="0 0 120 120" className="-rotate-90">
+              <circle cx={60} cy={60} r={r} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth={6} />
+              <circle cx={60} cy={60} r={r} fill="none" stroke={gradeRings[report.grade]} strokeWidth={6} strokeLinecap="round" strokeDasharray={circ} strokeDashoffset={off} />
+            </svg>
+            <div className="absolute flex flex-col items-center">
+              <span className={`text-lg font-extrabold tabular-nums ${gradeColors[report.grade]}`} style={{ fontFamily: "Manrope, sans-serif" }}>{report.overallScore}</span>
+            </div>
+          </div>
+        </div>
+        <div className="mt-4 space-y-2">
+          {PILLAR_ORDER.map((key) => (
+            <div key={key} className="flex items-center gap-2 text-xs">
+              <span className="w-10 text-[#8b90a0]" style={{ fontFamily: "Space Grotesk, sans-serif" }}>{PILLAR_LABELS[key].slice(0, 4).toUpperCase()}</span>
+              <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-white/[0.06]">
+                <div className={`h-full rounded-full ${gradeBars[report.pillars[key].grade]}`} style={{ width: `${report.pillars[key].score}%` }} />
+              </div>
+              <span className={`w-6 text-right tabular-nums font-medium ${gradeColors[report.pillars[key].grade]}`}>{report.pillars[key].score}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </Link>
+  );
+}
+
+function getCachedReports(): Report[] {
+  const reports: Report[] = [];
+  try {
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key?.startsWith("ax-scan:")) {
+        const data = localStorage.getItem(key);
+        if (data) {
+          reports.push(JSON.parse(data) as Report);
+        }
+      }
+    }
+  } catch { /* ignore */ }
+  return reports;
+}
+
+function scanHref(report: Report): string {
+  const params = new URLSearchParams({ url: report.url });
+  if (report.repo) {
+    const repo = report.repo.replace("https://github.com/", "");
+    params.set("repo", repo);
+  }
+  return `/ax/scan?${params.toString()}`;
+}
 
 export default function ReportsPage() {
-  const reports = getAllReports();
+  const staticReports = getAllReports();
+  const [cachedReports, setCachedReports] = useState<Report[]>([]);
+
+  useEffect(() => {
+    setCachedReports(getCachedReports());
+  }, []);
 
   return (
     <div className="mx-auto max-w-7xl space-y-8 bg-[#131313] px-8 py-12 text-[#e5e2e1]" style={{ fontFamily: "Inter, sans-serif" }}>
@@ -31,41 +94,17 @@ export default function ReportsPage() {
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
-        {reports.map((report) => {
-          const r = 50, circ = 2 * Math.PI * r, off = circ * (1 - report.overallScore / 100);
-          return (
-            <Link key={report.slug} href={axReportPath(report.slug)}>
-              <div className="rounded-xl border border-white/[0.06] bg-[#201f1f] p-6 transition-colors hover:border-white/[0.12]">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h2 className="text-lg font-bold" style={{ fontFamily: "Manrope, sans-serif" }}>{report.name}</h2>
-                    <p className="text-xs text-[#8b90a0]">{report.url}</p>
-                  </div>
-                  <div className="relative flex h-20 w-20 items-center justify-center">
-                    <svg width={80} height={80} viewBox="0 0 120 120" className="-rotate-90">
-                      <circle cx={60} cy={60} r={r} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth={6} />
-                      <circle cx={60} cy={60} r={r} fill="none" stroke={gradeRings[report.grade]} strokeWidth={6} strokeLinecap="round" strokeDasharray={circ} strokeDashoffset={off} />
-                    </svg>
-                    <div className="absolute flex flex-col items-center">
-                      <span className={`text-lg font-extrabold tabular-nums ${gradeColors[report.grade]}`} style={{ fontFamily: "Manrope, sans-serif" }}>{report.overallScore}</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="mt-4 space-y-2">
-                  {PILLAR_ORDER.map((key) => (
-                    <div key={key} className="flex items-center gap-2 text-xs">
-                      <span className="w-10 text-[#8b90a0]" style={{ fontFamily: "Space Grotesk, sans-serif" }}>{PILLAR_LABELS[key].slice(0, 4).toUpperCase()}</span>
-                      <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-white/[0.06]">
-                        <div className={`h-full rounded-full ${gradeBars[report.pillars[key].grade]}`} style={{ width: `${report.pillars[key].score}%` }} />
-                      </div>
-                      <span className={`w-6 text-right tabular-nums font-medium ${gradeColors[report.pillars[key].grade]}`}>{report.pillars[key].score}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </Link>
-          );
-        })}
+        {staticReports.map((report) => (
+          <ReportCard key={report.slug} report={report} href={axReportPath(report.slug)} />
+        ))}
+        {cachedReports.map((report) => (
+          <div key={report.slug} className="relative">
+            <div className="absolute right-3 top-3 z-10 rounded-full bg-blue-400/10 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-blue-400" style={{ fontFamily: "Space Grotesk, sans-serif" }}>
+              Scanned
+            </div>
+            <ReportCard report={report} href={scanHref(report)} />
+          </div>
+        ))}
       </div>
     </div>
   );
