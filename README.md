@@ -1,49 +1,73 @@
-# The Road to Next (PRO)
+# AX Score
 
-The finished application that you get after completing the first journey of The Road to Next. Here you can already download it as a starter kit and start your own journey.
+Measure Agent Experience (AX) readiness for websites and GitHub repositories. Scores products across four pillars — **Access**, **Context**, **Tools**, and **Orchestration** — using real standards like MCP, AGENTS.md, llms.txt, and OpenAPI.
 
-## Installation
+AX framework by [Matt Biilmann](https://biilmann.com). Built with [DuranteOS](https://durante.tech).
 
-1. Clone the repository
-2. Add your own `.env` file with the following content [0] coming from [Supabase](https://supabase.com/) [1]
-3. Run `npm install` to install the dependencies (maybe you have to append the `--force` flag)
-4. Run the database migration `npx prisma db push` to create the DB tables
+## How It Works
 
-[0]
+AX Score checks 37 signals across two surfaces:
+
+- **Website scanner** — 12 parallel HTTP fetches checking robots.txt AI crawler rules, llms.txt, MCP discovery, JSON-LD structured data, semantic HTML, OpenAPI specs, sitemap, and more
+- **Repo scanner** — GitHub REST API checks for AGENTS.md, CLAUDE.md, MCP server dependencies, test infrastructure, CI/CD, documentation quality, and more
+
+Signals are weighted (High/Medium/Low) and scored (Pass = 2, Partial = 1, Fail = 0). Pillar scores are normalized to 0-100 and combined using pillar weights into an overall score with a letter grade (A through F).
+
+### The Four Pillars
+
+| Pillar | Weight | Question |
+|--------|--------|----------|
+| **Access** | 25% | Can agents find and reach you? |
+| **Context** | 30% | Can agents understand you? |
+| **Tools** | 25% | Can agents take actions? |
+| **Orchestration** | 20% | Can agents compose workflows? |
+
+## Routes
+
+| Path | Description |
+|------|-------------|
+| `/ax` | Landing page with scan form |
+| `/ax/report/[slug]` | Static report viewer (Netlify, AX Score) |
+| `/ax/reports` | Reports listing |
+| `/ax/about` | Methodology and credits |
+| `/ax/scan?url=...&repo=...` | Live scan results |
+| `POST /api/ax/scan` | Scan API — accepts `{url, repo?}`, returns Report JSON |
+
+## Getting Started
 
 ```sh
-// .env
-DATABASE_URL="postgres://postgres.[project]:[password]@aws-0-[aws-region].pooler.supabase.com:6543/postgres?pgbouncer=true"
-
-DIRECT_URL="postgres://postgres.[project]:[password]@aws-0-[aws-region].pooler.supabase.com:5432/postgres"
-```
-
-[1]
-
-![Screenshot 2024-11-20 at 14 48 38](https://github.com/user-attachments/assets/3be82183-fb18-4845-a044-82c2c02787d8)
-
-## Usage
-
-```sh
-npm run prisma-seed
-```
-
-```sh
+npm install --legacy-peer-deps
 npm run dev
 ```
 
-```sh
-npx prisma studio
-```
+Open [http://localhost:3000/ax](http://localhost:3000/ax).
+
+### Environment Variables
 
 ```sh
-npm run email
+# Optional — increases GitHub API rate limit from 60 to 5000 req/hr
+GITHUB_TOKEN=ghp_...
 ```
 
-```sh
-npx inngest-cli@latest dev
-```
+No other env vars are needed for the AX Score features. The existing ticket/org features require additional configuration (Supabase, Stripe, Resend, S3, Inngest) but AX Score pages work without them.
 
-```sh
-stripe listen --forward-to localhost:3000/api/stripe
-```
+## Deploy
+
+Configured for Netlify via `netlify.toml`. Set `GITHUB_TOKEN` in Netlify environment variables for production GitHub scanning.
+
+## Tech Stack
+
+- Next.js 15 (App Router) + React 19 RC + TypeScript
+- Tailwind CSS + shadcn/ui (Radix primitives)
+- Static JSON reports + live scanning via serverless API route
+
+## Standards Referenced
+
+| Standard | Status |
+|----------|--------|
+| [MCP (Model Context Protocol)](https://modelcontextprotocol.io) | Linux Foundation / AAIF |
+| [AGENTS.md](https://docs.agents-md.org) | Linux Foundation / AAIF |
+| [llms.txt](https://llmstxt.org) | Community proposal |
+| [OpenAPI](https://www.openapis.org) | OpenAPI Initiative |
+| [JSON-LD / Schema.org](https://schema.org) | W3C |
+| [Agent Experience (AX)](https://agentexperience.ax) | Matt Biilmann |
