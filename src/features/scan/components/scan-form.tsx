@@ -8,12 +8,27 @@ export function ScanForm() {
   const [url, setUrl] = useState("");
   const [repo, setRepo] = useState("");
 
+  function normalizeUrl(input: string): string | null {
+    let value = input.trim();
+    if (!value) return null;
+    if (!/^https?:\/\//i.test(value)) {
+      value = `https://${value}`;
+    }
+    try {
+      new URL(value);
+      return value;
+    } catch {
+      return null;
+    }
+  }
+
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!url) return;
+    const normalized = normalizeUrl(url);
+    if (!normalized) return;
 
-    const params = new URLSearchParams({ url });
-    if (repo) params.set("repo", repo);
+    const params = new URLSearchParams({ url: normalized });
+    if (repo.trim()) params.set("repo", repo.trim());
     router.push(`/ax/scan?${params.toString()}`);
   }
 
@@ -37,9 +52,9 @@ export function ScanForm() {
           />
         </svg>
         <input
-          type="url"
+          type="text"
           required
-          placeholder="Website URL (e.g., app.yourservice.com)"
+          placeholder="Website URL (e.g., netlify.com)"
           value={url}
           onChange={(e) => setUrl(e.target.value)}
           className="w-full rounded-xl border-none bg-[#201f1f] py-4 pl-12 pr-4 text-[#e5e2e1] placeholder:text-[#8b90a0]/50 focus:ring-1 focus:ring-blue-400"
