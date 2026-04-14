@@ -2,10 +2,9 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { getAllReports } from "@/features/report/queries/get-report";
 import type { Grade, Report } from "@/features/report/types";
 import { PILLAR_LABELS, PILLAR_ORDER } from "@/features/report/types";
-import { axReportPath } from "@/paths";
+import { axHomePath } from "@/paths";
 
 const gradeColors: Record<Grade, string> = {
   A: "text-emerald-400", B: "text-blue-400", C: "text-amber-400", D: "text-orange-400", F: "text-red-400",
@@ -79,33 +78,37 @@ function scanHref(report: Report): string {
 }
 
 export default function ReportsPage() {
-  const staticReports = getAllReports();
-  const [cachedReports, setCachedReports] = useState<Report[]>([]);
+  const [reports, setReports] = useState<Report[]>([]);
 
   useEffect(() => {
-    setCachedReports(getCachedReports());
+    setReports(getCachedReports());
   }, []);
 
   return (
     <div className="mx-auto max-w-7xl space-y-8 bg-[#131313] px-8 py-12 text-[#e5e2e1]" style={{ fontFamily: "Inter, sans-serif" }}>
       <div>
         <h1 className="text-3xl font-bold tracking-tight" style={{ fontFamily: "Manrope, sans-serif" }}>Reports</h1>
-        <p className="mt-1 text-[#c1c6d7]">Agent Experience readiness assessments across websites and repositories.</p>
+        <p className="mt-1 text-[#c1c6d7]">Agent Experience readiness assessments from your scans.</p>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2">
-        {staticReports.map((report) => (
-          <ReportCard key={report.slug} report={report} href={axReportPath(report.slug)} />
-        ))}
-        {cachedReports.map((report) => (
-          <div key={report.slug} className="relative">
-            <div className="absolute right-3 top-3 z-10 rounded-full bg-blue-400/10 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-blue-400" style={{ fontFamily: "Space Grotesk, sans-serif" }}>
-              Scanned
-            </div>
-            <ReportCard report={report} href={scanHref(report)} />
-          </div>
-        ))}
-      </div>
+      {reports.length === 0 ? (
+        <div className="flex flex-col items-center gap-4 py-20 text-center">
+          <p className="text-[#8b90a0]">No reports yet. Run your first scan to see results here.</p>
+          <Link
+            href={axHomePath()}
+            className="inline-flex items-center justify-center rounded-xl bg-gradient-to-br from-[#adc6ff] to-[#4b8eff] px-6 py-2.5 text-sm font-bold text-[#001a41] transition-all hover:shadow-blue-500/20"
+            style={{ fontFamily: "Manrope, sans-serif" }}
+          >
+            Scan a Product
+          </Link>
+        </div>
+      ) : (
+        <div className="grid gap-4 sm:grid-cols-2">
+          {reports.map((report) => (
+            <ReportCard key={report.slug} report={report} href={scanHref(report)} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
